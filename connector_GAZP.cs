@@ -2,8 +2,8 @@ function Initialize() {
     StrategyName = "MyMaGAZP";
     AddParameter("P1", 0, "", 1);
     AddInput("Input1", Inputs.Candle, 1, true, "GAZP=МБ ЦК");
-    LongLimit = 50;
-    ShortLimit = -50;
+    LongLimit = 10;
+    ShortLimit = -10;
 }
 
 function OnUpdate() {

@@ -1,7 +1,7 @@
 function Initialize() {
-    StrategyName = "MyMaSBER";
+    StrategyName = "MyMaLKOH";
     AddParameter("P1", 0, "", 1);
-    AddInput("Input1", Inputs.Candle, 1, true, "SBER=МБ ЦК");
+    AddInput("Input1", Inputs.Candle, 1, true, "LKOH=МБ ЦК");
     LongLimit = 10;
     ShortLimit = -10;
 }
@@ -11,7 +11,7 @@ function OnUpdate() {
 
     // Пока флаг равен "NULL", будем ждать обновления флага
     while (Flag == "NULL") {
-        var webRequest = System.Net.WebRequest.Create("http://localhost:5000/getsignal/SBER") as System.Net.HttpWebRequest;
+        var webRequest = System.Net.WebRequest.Create("http://localhost:5000/getsignal/LKOH") as System.Net.HttpWebRequest;
         var response = webRequest.GetResponse();
         using (System.IO.StreamReader stream = new System.IO.StreamReader(response.GetResponseStream(), System.Text.Encoding.UTF8)) {
             Flag = stream.ReadToEnd();
@@ -29,7 +29,7 @@ function OnUpdate() {
     }
 
     // Сбрасываем флаг на сервере, чтобы избежать задержки в следующий раз
-    var resetRequest = System.Net.WebRequest.Create("http://localhost:5000/resetsignal/SBER") as System.Net.HttpWebRequest;
+    var resetRequest = System.Net.WebRequest.Create("http://localhost:5000/resetsignal/LKOH") as System.Net.HttpWebRequest;
     resetRequest.Method = "POST";
     var resetResponse = resetRequest.GetResponse();
 }
