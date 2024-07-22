@@ -21,7 +21,7 @@ function OnUpdate() {
         // Устанавливаем задержку в 1 секунду
         System.Threading.Thread.Sleep(1000);
     }
-
+    ShowMessage(Flag);
     if (Flag == "1") {
         EnterLong();
     }   
