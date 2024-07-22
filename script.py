@@ -7,8 +7,8 @@ from datetime import datetime, timedelta
 
 TOKEN = os.environ.get('TINKOFF_TOKEN')
 FAST_WINDOW = 7  # Окно для быстрой скользящей средней
-SLOW_WINDOW = 14  # Окно для медленной скользящей средней
-SYMBOLS = ['SBER', 'GAZP']  # Список тикеров инструментов
+SLOW_WINDOW = 15  # Окно для медленной скользящей средней
+SYMBOLS = ['SBER', 'GAZP', 'LKOH']  # Список тикеров инструментов
 POLLING_INTERVAL = 1  # Интервал обновления в секундах
 
 
@@ -78,14 +78,14 @@ def main():
                     data['slow_sma'] = calculate_sma(data, SLOW_WINDOW)
 
                     data['signal'] = 'No Signal'
-                    data.loc[(data['fast_sma'].shift(1) > data['slow_sma'].shift(1)) & (
-                                data['fast_sma'] > data['slow_sma']), 'signal'] = 'В лонге'
-                    data.loc[(data['fast_sma'].shift(1) < data['slow_sma'].shift(1)) & (
-                                data['fast_sma'] < data['slow_sma']), 'signal'] = 'В шорте'
-                    data.loc[(data['fast_sma'].shift(1) < data['slow_sma'].shift(1)) & (
-                                data['fast_sma'] > data['slow_sma']), 'signal'] = 'Вошли в лонг'
-                    data.loc[(data['fast_sma'].shift(1) > data['slow_sma'].shift(1)) & (
-                                data['fast_sma'] < data['slow_sma']), 'signal'] = 'Вошли в шорт'
+                    data.loc[(data['fast_sma'].shift(1) >= data['slow_sma'].shift(1)) & (
+                                data['fast_sma'] >= data['slow_sma']), 'signal'] = 'В лонге'
+                    data.loc[(data['fast_sma'].shift(1) <= data['slow_sma'].shift(1)) & (
+                                data['fast_sma'] <= data['slow_sma']), 'signal'] = 'В шорте'
+                    data.loc[(data['fast_sma'].shift(1) <= data['slow_sma'].shift(1)) & (
+                                data['fast_sma'] >= data['slow_sma']), 'signal'] = 'Вошли в лонг'
+                    data.loc[(data['fast_sma'].shift(1) >= data['slow_sma'].shift(1)) & (
+                                data['fast_sma'] <= data['slow_sma']), 'signal'] = 'Вошли в шорт'
 
                     # Проверка на сигналы и отправка
                     last_signal = data.iloc[-1]['signal']
